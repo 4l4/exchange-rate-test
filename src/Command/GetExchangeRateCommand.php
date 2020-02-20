@@ -49,8 +49,9 @@ class GetExchangeRateCommand extends Command
 
         $exchangeRates = $this->exchangeRateService->getExchangeRateByCurrency($currency);
 
+        $output->writeln("Exchange rate for $currency:");
         foreach ($exchangeRates as $key => $rate) {
-            $output->writeln("Exchange rate for $currency: $key -> $rate");
+            $output->writeln("$key -> $rate");
         }
 
         return 0;

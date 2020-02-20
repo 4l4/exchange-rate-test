@@ -15,6 +15,12 @@ use App\Handler\ExchangeRateHandler;
 use App\Handler\HTTPExchangeRateHandler;
 use App\Repository\ExchangeRateRepository;
 
+/**
+ * Class GetExchangeRateService
+ * @package App\Service
+ *
+ * General service for getting exchange rates
+ */
 class GetExchangeRateService
 {
     /**
@@ -59,7 +65,7 @@ class GetExchangeRateService
         $this->httpService = $httpService;
     }
 
-    public function setHandler(ExchangeRateHandler $handler): void
+    private function setHandler(ExchangeRateHandler $handler): void
     {
         $this->handler = $handler;
     }
@@ -71,7 +77,9 @@ class GetExchangeRateService
      */
     public function getExchangeRateByCurrency($currency, ExchangeRateHandler $handler = null): ?array
     {
-        if (null === $handler) {
+        if (null !== $handler) {
+            $this->setHandler($handler);
+        } else {
             $this->createDefaultChain();
         }
         if (null === $this->exchangeRate || empty($this->exchangeRate)) {
@@ -95,8 +103,8 @@ class GetExchangeRateService
     private function createDefaultChain()
     {
         $handler = new CacheExchangeRateHandler($this->cacheService);
-        $handler->setNext(new DatabaseExchangeRateHandler($this->exchangeRateRepository))
-            ->setNext(new HTTPExchangeRateHandler($this->httpService, $this->cacheService));
+        $handler->setNextHandler(new DatabaseExchangeRateHandler($this->exchangeRateRepository))
+            ->setNextHandler(new HTTPExchangeRateHandler($this->httpService, $this->cacheService));
 
         $this->setHandler($handler);
     }

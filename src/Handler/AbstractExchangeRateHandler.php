@@ -23,7 +23,7 @@ class AbstractExchangeRateHandler implements ExchangeRateHandler
      * @param ExchangeRateHandler $handler
      * @return ExchangeRateHandler
      */
-    public function setNext(ExchangeRateHandler $handler): ExchangeRateHandler
+    public function setNextHandler(ExchangeRateHandler $handler): ExchangeRateHandler
     {
         $this->nextHandler = $handler;
         return $handler;

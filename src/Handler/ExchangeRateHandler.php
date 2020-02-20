@@ -17,7 +17,7 @@ namespace App\Handler;
  */
 interface ExchangeRateHandler
 {
-    public function setNext(ExchangeRateHandler $handler): ExchangeRateHandler;
+    public function setNextHandler(ExchangeRateHandler $handler): ExchangeRateHandler;
 
     public function handle(string $currency): ?array;
 
